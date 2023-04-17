@@ -1,0 +1,31 @@
+<div class="container">
+    <h2>Pokemon</h2>
+    <form (ngSubmit)="onSubmit(pokeFom.value)" #pokeFom="ngForm">
+      <div class="pokeInfo">
+        <div>
+          <label for="pokeImage">Pokemon Image Url: </label>
+          <input type="text" name="image" id="pokeImage" placeholder="Image url" [(ngModel)]="model.image" required #image="ngModel">
+          <div [hidden]="image.valid || image.pristine">This field is required</div>
+        </div>
+        <div>
+          <label for="pokeName">Pokemon Name: </label>
+          <input type="text" name="name" id="pokeName" placeholder="Name" [(ngModel)]="model.name" required #name="ngModel">
+          <div [hidden]="name.valid || name.pristine">This field is required</div>
+        </div>
+        <div>
+          <label for="pokeAttack">Pokemon Attack: </label>
+          <input type="range" name="attack" id="pokeAttack" min="0" max="200" [(ngModel)]="model.attack">
+        </div>
+        <div>
+          <label for="pokeDefense">Pokemon Defense: </label>
+          <input type="range" name="defense" id="pokeDefense" min="0" max="200" [(ngModel)]="model.defense">
+        </div>  
+      </div>
+      
+      <div class="buttons-section">
+        <button type="submit" [disabled]="pokeFom.invalid">Save</button>
+        <button>Cancel</button>
+      </div>
+    </form>
+  </div>
+<pre> {{ pokeFom.value | json }} </pre>
