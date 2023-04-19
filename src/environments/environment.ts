@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: 'https://crudcrud.com/api/8a6a41f857414726b13643e6890a5565/pokemons', 
+  api: 'https://crudcrud.com/api/1961ea53129c497e8b46aea58827d6fd/pokemons', 
 };
 
 /*

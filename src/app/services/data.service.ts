@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-interface Pokemon {
+export interface Pokemon {
   'id': string;
   'image': string;
   'name': string;

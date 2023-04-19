@@ -19,7 +19,7 @@
           <td>{{pokemon.attack}}</td>
           <td>{{pokemon.defense}}</td>
           <td>
-            <button (click) ="editPokemon(pokemon.id)">Edit</button>
+            <button (click) ="editPokemon(pokemon)">Edit</button>
             <button (click) ="deletePokemon(pokemon.id)">Delete</button>
           </td>
         </tr>
@@ -29,5 +29,8 @@
 </div>
 <hr>
 <div id="pokeForm">
-  <app-pokemon-form></app-pokemon-form>
+  <app-pokemon-form
+    [editPokemon] = "goEdit"
+    (pokemonSave)="savePokemon($event)">
+  </app-pokemon-form>
 </div>

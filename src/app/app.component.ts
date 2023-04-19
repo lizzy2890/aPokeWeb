@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { PokemonForm } from './interfaces/pokemon-form';
+import { DataService, Pokemon } from './services/data.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'myPokemonWeb';
+  goEdit: boolean =false;
+  
   pokemons = [
     {
       'id': '25',
@@ -29,12 +33,41 @@ export class AppComponent {
       'idAuthor': 2
     },];
 
-    editPokemon(idPokemon: string): void {
-      console.log("Edit Pokemon");
+    constructor(private readonly dataSvc: DataService) {
+
+    }
+
+    ngOnInit(): void {
+      this.dataSvc.getPokemons()
+      .subscribe(pokemons => {
+        this.pokemons = [...pokemons];
+
+      });
+    }
+
+    savePokemon(pokemonForm: PokemonForm): void {
+      if(pokemonForm.actionType == 'add') {
+        this.addPokemon(pokemonForm.pokemon);
+      }
+      else {
+        this.editPokemon(pokemonForm.pokemon);
+      }
+    }
+
+    addPokemon(pokemon: Pokemon): void {
+      this.dataSvc.addNewPokemon(pokemon)
+      .subscribe(res => {
+        this.pokemons.push(res);
+      });
+    }
+
+    editPokemon(pokemon: Pokemon): void {
+      this.goEdit = true;
+      console.log("Edit Pokemon: ",pokemon.id);
     }
 
     deletePokemon(idPokemon: string): void {
-      console.log("Delete Pokemon");
+      console.log("Delete Pokemon: ",idPokemon);
     }
 
 }
