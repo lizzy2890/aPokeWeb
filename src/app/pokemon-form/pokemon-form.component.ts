@@ -1,5 +1,5 @@
 import { compileDeclarePipeFromMetadata } from '@angular/compiler';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { PokemonForm } from '../interfaces/pokemon-form';
 import { DataService, Pokemon } from '../services/data.service';
 
@@ -8,7 +8,7 @@ import { DataService, Pokemon } from '../services/data.service';
   templateUrl: './pokemon-form.component.html',
   styleUrls: ['./pokemon-form.component.css']
 })
-export class PokemonFormComponent implements OnInit {
+export class PokemonFormComponent implements OnInit, OnChanges {
 
   model = {
     "image": "no_url",
@@ -16,9 +16,8 @@ export class PokemonFormComponent implements OnInit {
     "attack": 0,
     "defense": 0
   }  
-  actionType = ['add', 'edit'];
 
-  @Input() editPokemon?: boolean ;
+  @Input() editablePokemon?: Pokemon ;
   @Output() pokemonSave = new EventEmitter<PokemonForm>();
 
   constructor(private readonly dataSvc: DataService) { }
@@ -26,11 +25,22 @@ export class PokemonFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngOnChanges(): void {
+    if(this.editablePokemon) {
+      this.model = Object.assign({}, this.editablePokemon);
+    }
+  }
+
   onSubmit(values: Pokemon): void {
     console.log('Form values', values);
     let pokeInfo = {};
 
-    if(this.editPokemon) {
+    if(this.editablePokemon) {
+      values.id = this.editablePokemon.id;
+      values.hp = this.editablePokemon.hp;
+      values.type = this.editablePokemon.type;
+      values.idAuthor = this.editablePokemon.idAuthor;
+
       pokeInfo = {
         "pokemon": values,
         "actionType": 'edit'

@@ -9,6 +9,7 @@ import { DataService, Pokemon } from './services/data.service';
 })
 export class AppComponent implements OnInit {
   title = 'myPokemonWeb';
+  idAuthor = '1';
   goEdit: boolean =false;
   
   pokemons = [
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
       'defense': 96,
       'hp': 111,
       'type': 'electricity',
-      'idAuthor': 1
+      'idAuthor': 'EVERA'
     },
     {
       'id': '7',
@@ -30,8 +31,10 @@ export class AppComponent implements OnInit {
       'defense': 121,
       'hp': 127,
       'type': 'water',
-      'idAuthor': 2
+      'idAuthor': 'EVERA'
     },];
+
+    selectedPokemon?: Pokemon; 
 
     constructor(private readonly dataSvc: DataService) {
 
@@ -45,6 +48,10 @@ export class AppComponent implements OnInit {
       });
     }
 
+    editSelectedPokemon(pokemon:Pokemon){
+      this.selectedPokemon = pokemon;
+    }
+
     savePokemon(pokemonForm: PokemonForm): void {
       if(pokemonForm.actionType == 'add') {
         this.addPokemon(pokemonForm.pokemon);
@@ -55,6 +62,9 @@ export class AppComponent implements OnInit {
     }
 
     addPokemon(pokemon: Pokemon): void {
+      pokemon.id = '' + (this.pokemons.length +1);
+      pokemon.idAuthor = this.idAuthor;
+
       this.dataSvc.addNewPokemon(pokemon)
       .subscribe(res => {
         this.pokemons.push(res);
@@ -62,12 +72,21 @@ export class AppComponent implements OnInit {
     }
 
     editPokemon(pokemon: Pokemon): void {
-      this.goEdit = true;
-      console.log("Edit Pokemon: ",pokemon.id);
+      this.dataSvc.updatePokemon(pokemon)
+      .subscribe(() => {
+        let updatedPokemons = this.pokemons.filter(p => p.id !== pokemon.id);
+        updatedPokemons.push(pokemon);
+        this.pokemons = [...updatedPokemons];
+      });      
     }
 
     deletePokemon(idPokemon: string): void {
-      console.log("Delete Pokemon: ",idPokemon);
+      this.dataSvc.deletePokemon(idPokemon)
+      .subscribe(() => {
+        let updatedPokemons = this.pokemons.filter(p => p.id !== idPokemon);
+        this.pokemons = [...updatedPokemons];
+      });
+      
     }
 
 }

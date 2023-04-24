@@ -11,7 +11,7 @@ export interface Pokemon {
   'defense': number;
   'hp': number;
   'type': string;
-  'idAuthor': number;
+  'idAuthor': string;
 }
 
 @Injectable({
@@ -28,7 +28,7 @@ export class DataService {
   }
 
   getPokemons(): Observable<Pokemon[]>{
-    return this.http.get<Pokemon[]>(this.API);
+    return this.http.get<Pokemon[]>(`${this.API}/?idAuthor=1`);
   }
 
   updatePokemon(pokemon: Pokemon): Observable<void>{

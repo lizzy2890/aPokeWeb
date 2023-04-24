@@ -6,6 +6,7 @@
   <div class="container" id="pokeList">
     <table>
       <thead>
+        <th>Id</th>
         <th>Nombre</th>
         <th>Imagen</th>
         <th>Ataque</th>
@@ -14,12 +15,13 @@
       </thead>
       <tbody>
         <tr *ngFor="let pokemon of pokemons">
+          <td>{{pokemon.id}}</td>
           <td>{{pokemon.name}}</td>
           <td><img src="{{pokemon.image}}"/></td>
           <td>{{pokemon.attack}}</td>
           <td>{{pokemon.defense}}</td>
           <td>
-            <button (click) ="editPokemon(pokemon)">Edit</button>
+            <button (click) ="editSelectedPokemon(pokemon)">Edit</button>
             <button (click) ="deletePokemon(pokemon.id)">Delete</button>
           </td>
         </tr>
@@ -30,7 +32,7 @@
 <hr>
 <div id="pokeForm">
   <app-pokemon-form
-    [editPokemon] = "goEdit"
+    [editablePokemon] = "selectedPokemon"
     (pokemonSave)="savePokemon($event)">
   </app-pokemon-form>
 </div>
