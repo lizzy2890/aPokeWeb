@@ -24,8 +24,7 @@
       
       <div class="buttons-section">
         <button type="submit" [disabled]="pokeFom.invalid">Save</button>
-        <button>Cancel</button>
+        <button (click)="closeForm()">Cancel</button>
       </div>
     </form>
   </div>
-<pre> {{ pokeFom.value | json }} </pre>

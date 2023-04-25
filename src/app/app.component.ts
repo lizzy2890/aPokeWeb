@@ -10,7 +10,8 @@ import { DataService, Pokemon } from './services/data.service';
 export class AppComponent implements OnInit {
   title = 'myPokemonWeb';
   idAuthor = '1';
-  goEdit: boolean =false;
+  goEdit: boolean = false;
+  showForm: boolean = false;
   
   pokemons = [
     {
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit {
 
     editSelectedPokemon(pokemon:Pokemon){
       this.selectedPokemon = pokemon;
+      this.showForm = true;
     }
 
     savePokemon(pokemonForm: PokemonForm): void {
@@ -68,6 +70,7 @@ export class AppComponent implements OnInit {
       this.dataSvc.addNewPokemon(pokemon)
       .subscribe(res => {
         this.pokemons.push(res);
+        this.showForm = false;
       });
     }
 
@@ -77,6 +80,7 @@ export class AppComponent implements OnInit {
         let updatedPokemons = this.pokemons.filter(p => p.id !== pokemon.id);
         updatedPokemons.push(pokemon);
         this.pokemons = [...updatedPokemons];
+        this.showForm = false;
       });      
     }
 
@@ -85,8 +89,15 @@ export class AppComponent implements OnInit {
       .subscribe(() => {
         let updatedPokemons = this.pokemons.filter(p => p.id !== idPokemon);
         this.pokemons = [...updatedPokemons];
-      });
-      
+      });      
     }
 
+    openForm() {
+      this.selectedPokemon = undefined;
+      this.showForm = true;
+    }
+
+    hideForm(hideForm : boolean) {
+      this.showForm = !hideForm;
+    }
 }

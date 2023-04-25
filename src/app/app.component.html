@@ -1,7 +1,7 @@
 <div id="summary">
   <div class="container" id="pokeSearch">
     <input type="text" name="searchBox" id="searchBox">
-    <button>Add Pokemon</button>
+    <button  (click)="openForm()">Add Pokemon</button>
   </div>
   <div class="container" id="pokeList">
     <table>
@@ -30,9 +30,10 @@
   </div>
 </div>
 <hr>
-<div id="pokeForm">
+<div *ngIf ="showForm" id="pokeForm">
   <app-pokemon-form
     [editablePokemon] = "selectedPokemon"
-    (pokemonSave)="savePokemon($event)">
+    (pokemonSave)="savePokemon($event)"
+    (hideForm)="hideForm($event)">
   </app-pokemon-form>
 </div>

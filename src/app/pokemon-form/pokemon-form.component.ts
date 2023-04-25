@@ -1,5 +1,7 @@
 import { compileDeclarePipeFromMetadata } from '@angular/compiler';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { clear } from 'console';
+import { type } from 'os';
 import { PokemonForm } from '../interfaces/pokemon-form';
 import { DataService, Pokemon } from '../services/data.service';
 
@@ -19,6 +21,7 @@ export class PokemonFormComponent implements OnInit, OnChanges {
 
   @Input() editablePokemon?: Pokemon ;
   @Output() pokemonSave = new EventEmitter<PokemonForm>();
+  @Output() hideForm = new EventEmitter<boolean>();
 
   constructor(private readonly dataSvc: DataService) { }
 
@@ -26,6 +29,8 @@ export class PokemonFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
+    console.log('Editablepokemon:', this.editablePokemon);
+    console.log('Typeof editablepokemon: ', typeof(this.editablePokemon));
     if(this.editablePokemon) {
       this.model = Object.assign({}, this.editablePokemon);
     }
@@ -65,6 +70,8 @@ export class PokemonFormComponent implements OnInit, OnChanges {
     };
   }
 
-
-
+  closeForm(): void {
+    this.clearForm();
+    this.hideForm.emit(true);
+  }
 }
