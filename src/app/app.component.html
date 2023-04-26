@@ -1,8 +1,10 @@
 <div id="summary">
-  <div class="container" id="pokeSearch">
-    <input type="text" name="searchBox" id="searchBox">
-    <button  (click)="openForm()">Add Pokemon</button>
-  </div>
+  <app-poke-search 
+    [pokemons]="pokemons"
+    [resetSearch]="resetSearch"
+    (filteredPokemons)="setFilteredPokemons($event)">
+  </app-poke-search>
+  <button  (click)="openForm()">Add Pokemon</button>
   <div class="container" id="pokeList">
     <table>
       <thead>
@@ -14,7 +16,7 @@
         <th>Acciones</th>
       </thead>
       <tbody>
-        <tr *ngFor="let pokemon of pokemons">
+        <tr *ngFor="let pokemon of filteredPokemons">
           <td>{{pokemon.id}}</td>
           <td>{{pokemon.name}}</td>
           <td><img src="{{pokemon.image}}"/></td>
@@ -30,10 +32,9 @@
   </div>
 </div>
 <hr>
-<div *ngIf ="showForm" id="pokeForm">
-  <app-pokemon-form
-    [editablePokemon] = "selectedPokemon"
-    (pokemonSave)="savePokemon($event)"
-    (hideForm)="hideForm($event)">
-  </app-pokemon-form>
-</div>
+<app-pokemon-form
+  *ngIf ="showForm"
+  [editablePokemon] = "selectedPokemon"
+  (pokemonSave)="savePokemon($event)"
+  (hideForm)="hideForm($event)">
+</app-pokemon-form>

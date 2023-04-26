@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   idAuthor = '1';
   goEdit: boolean = false;
   showForm: boolean = false;
+  resetSearch : boolean = false;
   
   pokemons = [
     {
@@ -35,6 +36,8 @@ export class AppComponent implements OnInit {
       'idAuthor': 'EVERA'
     },];
 
+    filteredPokemons:Pokemon[] = [];
+
     selectedPokemon?: Pokemon; 
 
     constructor(private readonly dataSvc: DataService) {
@@ -42,11 +45,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit(): void {
-      this.dataSvc.getPokemons()
-      .subscribe(pokemons => {
-        this.pokemons = [...pokemons];
-
-      });
+      this.getPokemons();
     }
 
     editSelectedPokemon(pokemon:Pokemon){
@@ -64,13 +63,14 @@ export class AppComponent implements OnInit {
     }
 
     addPokemon(pokemon: Pokemon): void {
-      pokemon.id = '' + (this.pokemons.length +1);
+      pokemon.id = '' + (this.pokemons.length + 1); //mejorar el asignar ID
       pokemon.idAuthor = this.idAuthor;
 
       this.dataSvc.addNewPokemon(pokemon)
       .subscribe(res => {
         this.pokemons.push(res);
         this.showForm = false;
+        this.resetFilteredPokemons();
       });
     }
 
@@ -81,6 +81,7 @@ export class AppComponent implements OnInit {
         updatedPokemons.push(pokemon);
         this.pokemons = [...updatedPokemons];
         this.showForm = false;
+        this.resetFilteredPokemons();
       });      
     }
 
@@ -89,7 +90,16 @@ export class AppComponent implements OnInit {
       .subscribe(() => {
         let updatedPokemons = this.pokemons.filter(p => p.id !== idPokemon);
         this.pokemons = [...updatedPokemons];
+        this.resetFilteredPokemons();
       });      
+    }
+
+    getPokemons(): void {
+      this.dataSvc.getPokemons()
+      .subscribe(pokemons => {
+        this.pokemons = [...pokemons];
+        this.filteredPokemons = this.pokemons;
+      });
     }
 
     openForm() {
@@ -99,5 +109,17 @@ export class AppComponent implements OnInit {
 
     hideForm(hideForm : boolean) {
       this.showForm = !hideForm;
+    }
+
+    setFilteredPokemons(filtered : Pokemon []): void {
+      this.filteredPokemons = filtered;
+    }
+
+    resetFilteredPokemons(): void {
+      this.filteredPokemons = this.pokemons;
+      this.resetSearch = true;
+      setTimeout(() => {
+        this.resetSearch = false;
+      }, 500);
     }
 }
