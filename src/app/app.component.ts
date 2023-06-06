@@ -37,12 +37,9 @@ export class AppComponent implements OnInit {
     },];
 
     filteredPokemons:Pokemon[] = [];
-
     selectedPokemon?: Pokemon; 
 
-    constructor(private readonly dataSvc: DataService) {
-
-    }
+    constructor(private readonly dataSvc: DataService) {}
 
     ngOnInit(): void {
       this.getPokemons();
@@ -68,7 +65,7 @@ export class AppComponent implements OnInit {
 
       this.dataSvc.addNewPokemon(pokemon)
       .subscribe(res => {
-        this.pokemons.push(res);
+        this.getPokemons();
         this.showForm = false;
         this.resetFilteredPokemons();
       });
@@ -77,9 +74,7 @@ export class AppComponent implements OnInit {
     editPokemon(pokemon: Pokemon): void {
       this.dataSvc.updatePokemon(pokemon)
       .subscribe(() => {
-        let updatedPokemons = this.pokemons.filter(p => p.id !== pokemon.id);
-        updatedPokemons.push(pokemon);
-        this.pokemons = [...updatedPokemons];
+        this.getPokemons();
         this.showForm = false;
         this.resetFilteredPokemons();
       });      
@@ -88,8 +83,7 @@ export class AppComponent implements OnInit {
     deletePokemon(idPokemon: string): void {
       this.dataSvc.deletePokemon(idPokemon)
       .subscribe(() => {
-        let updatedPokemons = this.pokemons.filter(p => p.id !== idPokemon);
-        this.pokemons = [...updatedPokemons];
+        this.getPokemons();
         this.resetFilteredPokemons();
       });      
     }
