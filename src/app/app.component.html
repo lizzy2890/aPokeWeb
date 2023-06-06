@@ -32,9 +32,15 @@
   </div>
 </div>
 <hr>
-<app-pokemon-form
-  *ngIf ="showForm"
-  [editablePokemon] = "selectedPokemon"
-  (pokemonSave)="savePokemon($event)"
-  (hideForm)="hideForm($event)">
-</app-pokemon-form>
+<div class="container">
+  <div class="row">
+      <app-pokemon-entry
+        *ngIf ="showForm"
+        [editablePokemon] = "selectedPokemon"
+        (pokemonSave)="savePokemon($event)"
+        (hideForm)="hideForm($event)">
+      </app-pokemon-entry>
+  </div>
+</div>
+
+

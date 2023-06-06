@@ -38,7 +38,7 @@ export class PokeSearchComponent implements OnInit {
       this.filteredPokemons.emit(this.searchedPokemons);     
     }
     else {
-      if(this.searchedPokemons != this.pokemons) {
+      if(this.searchedPokemons?.length !== this.pokemons?.length) {
         this.searchedPokemons = this.pokemons;
         this.filteredPokemons.emit(this.searchedPokemons);
       }

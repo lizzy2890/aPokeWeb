@@ -33,7 +33,6 @@ export class PokemonFormComponent implements OnInit, OnChanges {
   }
 
   onSubmit(values: Pokemon): void {
-    console.log('Form values', values);
     let pokeInfo = {};
 
     if(this.editablePokemon) {

@@ -1,0 +1,32 @@
+<div class="container">
+    <h2>Pokemon</h2>
+    <form (ngSubmit)="onSubmit()" [formGroup]="pokemonEntry">
+      <div class="pokeInfo">
+        <div>
+          <label for="pokeImage">Pokemon Image Url: </label>
+          <input type="text" name="image" id="pokeImage" placeholder="Image url" required formControlName="image">
+          <div *ngIf="pokemonEntry.get('image')?.touched && pokemonEntry.get('image')?.errors?.['required']">This field is required</div>
+        </div>
+        <div>
+          <label for="pokeName">Pokemon Name: </label>
+          <input type="text" name="name" id="pokeName" placeholder="Name" required formControlName="name">
+          <div *ngIf="pokemonEntry.get('name')?.touched && pokemonEntry.get('name')?.errors?.['required']">This field is required</div>
+          <div *ngIf="pokemonEntry.get('name')?.touched && pokemonEntry.get('name')?.errors?.['minlength']">
+            Name should min length is {{pokemonEntry.get('name')?.errors?.['minlength']?.requiredLength}}</div>
+        </div>
+        <div>
+          <label for="pokeAttack">Pokemon Attack: </label>
+          <input type="range" name="attack" id="pokeAttack" min="0" max="200" formControlName="attack">
+        </div>
+        <div>
+          <label for="pokeDefense">Pokemon Defense: </label>
+          <input type="range" name="defense" id="pokeDefense" min="0" max="200" formControlName="defense">
+        </div>  
+      </div>
+      
+      <div class="buttons-section">
+        <button type="submit" [disabled]="pokemonEntry.invalid">Save</button>
+        <button (click)="closeForm()">Cancel</button>
+      </div>
+    </form>
+  </div>
