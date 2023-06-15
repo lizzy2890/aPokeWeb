@@ -9,6 +9,9 @@ import { PokeSearchComponent } from './poke-search/poke-search.component';
 import { PokemonEntryComponent } from './pokemon-entry/pokemon-entry.component';
 import { LoadingModule } from './shared/components/loading/loading.module';
 import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
+import { PokemonListComponent } from './pokemon-list/pokemon-list.component';
+import { AppRoutingModule } from './app-routing.module';
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 
 
 @NgModule({
@@ -16,14 +19,17 @@ import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
     AppComponent,
     PokemonFormComponent,
     PokeSearchComponent,
-    PokemonEntryComponent
+    PokemonEntryComponent,
+    PokemonListComponent,
+    PagenotfoundComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    LoadingModule
+    LoadingModule,
+    AppRoutingModule
   ],
   providers: [
     { 

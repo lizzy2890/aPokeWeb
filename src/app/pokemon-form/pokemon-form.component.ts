@@ -8,6 +8,8 @@ import { DataService, Pokemon } from '../services/data.service';
   templateUrl: './pokemon-form.component.html',
   styleUrls: ['./pokemon-form.component.css']
 })
+
+//The class is outdated, but kept to remember how to use forms with template driven form
 export class PokemonFormComponent implements OnInit, OnChanges {
 
   model = {

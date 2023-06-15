@@ -1,0 +1,33 @@
+<div id="summary">
+    <app-poke-search 
+      [pokemons]="pokemons"
+      [resetSearch]="resetSearch"
+      (filteredPokemons)="setFilteredPokemons($event)">
+    </app-poke-search>
+    <button  (click)="registerPokemon()">Add Pokemon</button>
+    <div class="container" id="pokeList">
+      <table>
+        <thead>
+          <th>Id</th>
+          <th>Nombre</th>
+          <th>Imagen</th>
+          <th>Ataque</th>
+          <th>Defensa</th>
+          <th>Acciones</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pokemon of filteredPokemons">
+            <td>{{pokemon.id}}</td>
+            <td>{{pokemon.name}}</td>
+            <td><img src="{{pokemon.image}}"/></td>
+            <td>{{pokemon.attack}}</td>
+            <td>{{pokemon.defense}}</td>
+            <td>
+              <button (click) ="editSelectedPokemon(pokemon)">Edit</button>
+              <button (click) ="deletePokemon(pokemon.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>

@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PokemonForm } from '../interfaces/pokemon-form';
-import { Pokemon } from '../services/data.service';
+import { DataService, Pokemon } from '../services/data.service';
 
 @Component({
   selector: 'app-pokemon-entry',
@@ -9,60 +10,81 @@ import { Pokemon } from '../services/data.service';
   styleUrls: ['./pokemon-entry.component.css']
 })
 export class PokemonEntryComponent implements OnInit {
-  pokemonEntry!:FormGroup;
+  idAuthor = '1';
+  id!: string;  
   min_nameLength!: number;
+  pokemonEntry!:FormGroup;
   pokemon!: Pokemon;
-  
-  @Input() editablePokemon?: Pokemon;
-  @Output() pokemonSave = new EventEmitter<PokemonForm>();
-  @Output() hideForm = new EventEmitter<boolean>();
 
-  constructor(private readonly fb: FormBuilder) {
-    this.min_nameLength = 3;
-    this.pokemonEntry = this.initFields();
-   }
-
-  ngOnChanges(): void {
-    if(this.editablePokemon) {
-      this.pokemonEntry.patchValue({
-        image: this.editablePokemon.image,
-        name: this.editablePokemon.name,
-        attack: this.editablePokemon.attack,
-        defense: this.editablePokemon.defense
-      });
-
+  constructor(
+    private readonly dataSvc: DataService,
+    private readonly fb: FormBuilder,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router) 
+    {
+      this.min_nameLength = 3;
     }
-  }
 
    ngOnInit(): void {
-    
+    this.pokemonEntry = this.initFields();
+    this.route.params.subscribe((params: Params) =>{
+      this.id = params['id'];
+      if(this.id.length > 0)
+      {
+        this.dataSvc.getPokemon(this.id)
+        .subscribe( pokemon => {
+          this.pokemon = pokemon;
+          this.pokemonEntry.patchValue({
+            image: pokemon.image,
+            name: pokemon.name,
+            attack: pokemon.attack,
+            defense: pokemon.defense
+          });
+        });
+      }
+    });
+  }
+
+  addPokemon(pokemon: Pokemon): void {
+    pokemon.idAuthor = this.idAuthor;
+
+    this.dataSvc.getPokemons()
+    .subscribe(
+      pokemons => {
+        //set Id, look for a better way
+        let numPokemons = pokemons.length;
+        pokemon.id = `${numPokemons + 1}`;
+
+        this.dataSvc.addNewPokemon(pokemon)
+        .subscribe(res => {
+          this.backToList();
+        });
+      });
+  }
+
+  editPokemon(pokemon: Pokemon): void {
+    this.dataSvc.updatePokemon(pokemon)
+    .subscribe(() => {
+      this.backToList();
+    });      
   }
 
   onSubmit(): void {
-    let pokeInfo = {} as PokemonForm;
-    console.log('Form ->',  this.pokemonEntry.value);
-    if(this.editablePokemon) {
+    let pokeInfo = {} as Pokemon;
+    pokeInfo = this.pokemonEntry.value;
 
-      pokeInfo  = {
-        "pokemon": this.pokemonEntry.value,
-        "actionType": 'edit'
-      };
-      
-      pokeInfo.pokemon.id = this.editablePokemon.id;
-      pokeInfo.pokemon.hp = this.editablePokemon.hp;
-      pokeInfo.pokemon.type = this.editablePokemon.type;
-      pokeInfo.pokemon.idAuthor = this.editablePokemon.idAuthor;
+    if(this.id.length > 0) {
+      pokeInfo.id = this.pokemon.id;
+      pokeInfo.hp = this.pokemon.hp;
+      pokeInfo.type = this.pokemon.type;
+      pokeInfo.idAuthor = this.pokemon.idAuthor;
 
+      this.editPokemon(pokeInfo);
     }
     else {
-      pokeInfo = {
-        "pokemon": this.pokemonEntry.value,
-        "actionType": 'add'
-      };
-
+      this.addPokemon(pokeInfo);
     }
-    this.pokemonSave.emit(pokeInfo as PokemonForm);
-  }
+  } 
 
   initFields(): FormGroup {
     return this.fb.group({
@@ -73,18 +95,7 @@ export class PokemonEntryComponent implements OnInit {
     });
   }
 
-  clearForm(): void {
-    this.pokemonEntry.setValue({
-      image: '',
-      name: '',
-      attack: 0,
-      defense: 0
-    });
+  backToList(): void {
+    this.router.navigate(['']);
   }
-
-  closeForm(): void {
-    this.hideForm.emit(true);
-    this.clearForm();
-  }
-
 }

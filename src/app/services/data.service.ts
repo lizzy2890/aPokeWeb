@@ -30,7 +30,11 @@ export class DataService {
   getPokemons(): Observable<Pokemon[]>{
     return this.http.get<Pokemon[]>(`${this.API}/?idAuthor=1`);
   }
-
+  
+  getPokemon(id: string): Observable<Pokemon>{
+    return this.http.get<Pokemon>(`${this.API}/${id}`);
+  }
+  
   updatePokemon(pokemon: Pokemon): Observable<void>{
     const body = pokemon;
     return this.http.put<void>(`${this.API}/${pokemon.id}`, body)
