@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { Pokemon } from '../services/data.service';
+import { SEARCH_SELECTOR } from './poke-search.constants';
 
 @Component({
   selector: 'app-poke-search',
@@ -14,6 +15,10 @@ export class PokeSearchComponent implements OnInit, AfterViewInit {
   messgeNotFound: string = 'We don\'t have registered that pokemon. It could be you discovered a new one?!!!';
   showEraseAll: boolean = false;
   camouflage: boolean = false;
+  searchBoxElements: string[] = [
+    SEARCH_SELECTOR.INPUT_SEARCH,
+    SEARCH_SELECTOR.CLEAR_SEARCH
+  ];
   
   @Input() pokemons?: Pokemon[];
   @Input() resetSearch?: boolean;
@@ -39,19 +44,20 @@ export class PokeSearchComponent implements OnInit, AfterViewInit {
           this.camouflage = true;
         }
     });
-
-    document.addEventListener('focusin',
-    (event) => {
-      const targetElement = event.target as HTMLElement;
-      if(targetElement.id && (targetElement.id === 'searchText' || targetElement.id === 'clearText')) {
-        this.showEraseAll = true;
-        this.camouflage = false;
-      } else {
-        this.showEraseAll = false;
-      }
-    });
-    //missing case: when comming back to searchbox from outside and click in where x is, it'll show it and erase the word  
+    
   }
+
+  @HostListener('document:focusin', ['$event'])
+  checkFocusIn(event: Event): void {
+    const targetElement = event.target as HTMLElement;
+    if(targetElement.id && this.searchBoxElements.includes(targetElement.id)) {
+      this.showEraseAll = true;
+      this.camouflage = false;
+    } else {
+      this.showEraseAll = false;
+    }
+  }
+  //missing case: when comming back to searchbox from outside and click in where x is, it'll show it and erase the word  
 
   onSubmit(): void {
     this.searchedPokemons = this.pokemons?.filter(
