@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Pokemon } from '../services/data.service';
 import { SEARCH_SELECTOR } from './poke-search.constants';
 
@@ -23,7 +23,6 @@ export class PokeSearchComponent implements OnInit {
   @Input() pokemons?: Pokemon[];
   @Input() resetSearch?: boolean;
   @Output() filteredPokemons = new EventEmitter<Pokemon[]>();
-  @ViewChild('searchBox') searchBox!: ElementRef;
 
   constructor() { }
 
@@ -47,7 +46,6 @@ export class PokeSearchComponent implements OnInit {
     else {
       this.found = true;
     }
-
     this.filteredPokemons.emit(this.searchedPokemons); 
   }
 

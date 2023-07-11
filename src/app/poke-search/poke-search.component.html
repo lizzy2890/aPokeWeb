@@ -1,8 +1,7 @@
 <div class="search-container">
     <form (ngSubmit)="onSubmit()" #pokeSearch="ngForm">
         <span 
-            class="search-box" 
-            #searchBox
+            class="search-box"
             appFocusOut
             [elementsInBox] ="searchBoxElements"
             (onFocusOut) = "setCamouflage($event)"
