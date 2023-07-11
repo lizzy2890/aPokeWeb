@@ -7,7 +7,7 @@ import { SEARCH_SELECTOR } from './poke-search.constants';
   templateUrl: './poke-search.component.html',
   styleUrls: ['./poke-search.component.css']
 })
-export class PokeSearchComponent implements OnInit, AfterViewInit {
+export class PokeSearchComponent implements OnInit {
 
   searchWord: string = '';
   searchedPokemons?: Pokemon[];
@@ -36,29 +36,6 @@ export class PokeSearchComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {
-    this.searchBox.nativeElement.addEventListener("focusout",
-    (e: UIEvent) =>{
-        if(e.target) {
-          var element = e.target as HTMLElement;
-          this.camouflage = true;
-        }
-    });
-    
-  }
-
-  @HostListener('document:focusin', ['$event'])
-  checkFocusIn(event: Event): void {
-    const targetElement = event.target as HTMLElement;
-    if(targetElement.id && this.searchBoxElements.includes(targetElement.id)) {
-      this.showEraseAll = true;
-      this.camouflage = false;
-    } else {
-      this.showEraseAll = false;
-    }
-  }
-  //missing case: when comming back to searchbox from outside and click in where x is, it'll show it and erase the word  
-
   onSubmit(): void {
     this.searchedPokemons = this.pokemons?.filter(
       pokemon => pokemon.name.includes(this.searchWord)
@@ -76,5 +53,14 @@ export class PokeSearchComponent implements OnInit, AfterViewInit {
 
   resetSearchWord(): void {
     this.searchWord = '';
+  }
+
+  setCamouflage(indicator: boolean): void {
+    this.camouflage = indicator;
+  }
+
+  hideClearButton(flags: boolean[]): void {
+    this.setCamouflage(flags[0]);
+    this.showEraseAll = flags[1];
   }
 }

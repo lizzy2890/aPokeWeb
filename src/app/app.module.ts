@@ -12,6 +12,7 @@ import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { PokemonListComponent } from './pokemon-list/pokemon-list.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+import { FocusOutDirective } from './focus-out.directive';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
     PokeSearchComponent,
     PokemonEntryComponent,
     PokemonListComponent,
-    PagenotfoundComponent
+    PagenotfoundComponent,
+    FocusOutDirective
   ],
   imports: [
     BrowserModule,

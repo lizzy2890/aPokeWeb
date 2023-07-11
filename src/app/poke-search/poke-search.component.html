@@ -2,7 +2,11 @@
     <form (ngSubmit)="onSubmit()" #pokeSearch="ngForm">
         <span 
             class="search-box" 
-            #searchBox>
+            #searchBox
+            appFocusOut
+            [elementsInBox] ="searchBoxElements"
+            (onFocusOut) = "setCamouflage($event)"
+            (onFocusIn) = "hideClearButton($event)">
             <input 
                 type="text" 
                 name="searchText" 
