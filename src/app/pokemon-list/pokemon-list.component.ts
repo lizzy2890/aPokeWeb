@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PokemonForm } from '../interfaces/pokemon-form';
+import { Router } from '@angular/router';
 import { DataService, Pokemon } from '../services/data.service';
 
 @Component({
@@ -61,5 +60,4 @@ export class PokemonListComponent implements OnInit {
       this.resetSearch = false;
     }, 500);
   }
-
 }

@@ -37,7 +37,7 @@ export class DataService {
   
   updatePokemon(pokemon: Pokemon): Observable<void>{
     const body = pokemon;
-    return this.http.put<void>(`${this.API}/${pokemon.id}`, body)
+    return this.http.put<void>(`${this.API}/${pokemon.id}`, body);
   }
 
   deletePokemon(id: string): Observable<void>{

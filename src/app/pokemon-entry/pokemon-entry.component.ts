@@ -27,22 +27,8 @@ export class PokemonEntryComponent implements OnInit {
 
    ngOnInit(): void {
     this.pokemonEntry = this.initFields();
-    this.route.params.subscribe((params: Params) =>{
-      this.id = params['id'];
-      if(this.id.length > 0)
-      {
-        this.dataSvc.getPokemon(this.id)
-        .subscribe( pokemon => {
-          this.pokemon = pokemon;
-          this.pokemonEntry.patchValue({
-            image: pokemon.image,
-            name: pokemon.name,
-            attack: pokemon.attack,
-            defense: pokemon.defense
-          });
-        });
-      }
-    });
+    this.getPokemonInfo();
+    
   }
 
   addPokemon(pokemon: Pokemon): void {
@@ -67,6 +53,25 @@ export class PokemonEntryComponent implements OnInit {
     .subscribe(() => {
       this.backToList();
     });      
+  }
+
+  getPokemonInfo(): void {
+    this.route.params.subscribe((params: Params) =>{
+      this.id = params['id'];
+      if(this.id.length > 0)
+      {
+        this.dataSvc.getPokemon(this.id)
+        .subscribe( pokemon => {
+          this.pokemon = pokemon;
+          this.pokemonEntry.patchValue({
+            image: pokemon.image,
+            name: pokemon.name,
+            attack: pokemon.attack,
+            defense: pokemon.defense
+          });
+        });
+      }
+    });
   }
 
   onSubmit(): void {

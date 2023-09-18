@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 
 import { PokeSearchComponent } from './poke-search.component';
 
@@ -8,6 +9,7 @@ describe('PokeSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ FormsModule ],
       declarations: [ PokeSearchComponent ]
     })
     .compileComponents();
